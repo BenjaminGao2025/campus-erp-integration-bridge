@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block route_label %}GET /requests/{{ item.id[:8] }}{% endblock %}
 {% block content %}
 
 {% macro status_pill(status) -%}

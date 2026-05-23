@@ -4,25 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Campus ERP Integration Bridge{% endblock %}</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css?v=20260523-ui-shell">
   </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="/">Campus ERP Integration Bridge</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/requests/new">New Request</a>
-        <a href="/docs">API Docs</a>
-      </nav>
-      <span class="spacer"></span>
-      <span class="env-badge" title="Synthetic demo environment — no real systems"><span class="dot"></span>Synthetic Demo</span>
-    </header>
-    <main class="container">
-      {% block content %}{% endblock %}
-    </main>
-    <footer class="footer">
-      Synthetic Workday-adjacent prototype. No official university systems, data, branding, or Workday access. Synthetic data only.
-    </footer>
+  <body class="app-page">
+    <div class="route-label">{% block route_label %}GET /{% endblock %}</div>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/">Campus ERP Integration Bridge</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/dashboard">Dashboard</a>
+          <a href="/requests/new">New Request</a>
+          <a href="/docs">API Docs</a>
+        </nav>
+        <span class="spacer"></span>
+        <span class="env-badge" title="Synthetic demo environment - no real systems"><span class="dot"></span>Synthetic Demo</span>
+      </header>
+      <main class="page-frame">
+        {% block content %}{% endblock %}
+      </main>
+      <footer class="footer">
+        Synthetic Workday-adjacent prototype. No official university systems, data, branding, or Workday access. Synthetic data only.
+      </footer>
+    </div>
   </body>
 </html>
