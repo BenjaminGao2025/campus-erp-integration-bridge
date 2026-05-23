@@ -1,84 +1,178 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>New Request</h1>
-<p class="muted">Create a synthetic request for the demo workflow. The request is saved first; open the detail page to submit it into deterministic validation, approval routing, adapter execution, and audit logging.</p>
+
+<div class="page-head">
+  <div>
+    <div class="crumbs">/ requests / new</div>
+    <h1>New Request</h1>
+  </div>
+</div>
+
+<p class="muted" style="max-width: 80ch;">Create a synthetic request for the demo workflow. The request is saved first; open the detail page to submit it into deterministic validation, approval routing, adapter execution, and audit logging. <strong>Synthetic data only — no real systems are contacted.</strong></p>
 
 <section class="form-grid">
-  <form class="panel request-form" method="post" action="/requests/new">
+
+  <form id="worker-change" class="panel request-form" method="post" action="/requests/new">
     <input type="hidden" name="request_type" value="worker_change">
-    <h2>Worker Change</h2>
-    <label>Submitted by <input name="submitted_by" value="Demo Requester" required></label>
-    <label>Email <input type="email" name="submitted_by_email" value="requester@example.test" required></label>
-    <label>Worker ID <input name="worker_id" value="WKR-10001" required></label>
-    <label>Change type
-      <select name="change_type" required>
-        <option value="department_update">Department update</option>
-        <option value="manager_update">Manager update</option>
-        <option value="location_update">Location update</option>
-        <option value="employment_status_update">Employment status update</option>
-      </select>
-    </label>
-    <label>Effective date <input type="date" name="effective_date" value="2026-07-01" required></label>
-    <label>Current value <input name="current_value" value="Operations" required></label>
-    <label>Proposed value <input name="proposed_value" value="Enterprise Systems" required></label>
-    <label>Requested by role
-      <select name="requested_by_role" required>
-        <option value="manager">Manager</option>
-        <option value="analyst">Analyst</option>
-        <option value="employee">Employee</option>
-      </select>
-    </label>
-    <label>Adapter simulation
-      <select name="simulate_failure">
-        <option value="none">No failure</option>
-        <option value="transient">Transient failure</option>
-        <option value="permanent">Permanent failure</option>
-      </select>
-    </label>
-    <label>Reason <textarea name="reason" required>Department record needs to reflect a synthetic internal transfer.</textarea></label>
-    <label>Free text <textarea name="free_text">Please update this synthetic worker's department after manager approval.</textarea></label>
-    <button type="submit">Create Worker Change</button>
+    <header>
+      <span class="pill accent">Demo · Worker Change</span>
+      <h2 style="margin-top:8px;">Worker Change</h2>
+      <p class="panel-sub">Synthetic worker data change → JSON Schema validation → manager approval → mock ERP REST adapter.</p>
+    </header>
+
+    <div class="form-row">
+      <label>Submitted by
+        <input name="submitted_by" value="Demo Requester" required>
+      </label>
+      <label>Email
+        <input type="email" name="submitted_by_email" value="requester@example.test" required>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Worker ID
+        <input name="worker_id" value="WKR-10001" required>
+      </label>
+      <label>Change type
+        <select name="change_type" required>
+          <option value="department_update">Department update</option>
+          <option value="manager_update">Manager update</option>
+          <option value="location_update">Location update</option>
+          <option value="employment_status_update">Employment status update</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Effective date
+        <input type="date" name="effective_date" value="2026-07-01" required>
+      </label>
+      <label>Requested by role
+        <select name="requested_by_role" required>
+          <option value="manager">Manager</option>
+          <option value="analyst">Analyst</option>
+          <option value="employee">Employee</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Current value
+        <input name="current_value" value="Operations" required>
+      </label>
+      <label>Proposed value
+        <input name="proposed_value" value="Enterprise Systems" required>
+      </label>
+    </div>
+
+    <div class="form-row single">
+      <label>Adapter simulation
+        <select name="simulate_failure">
+          <option value="none">No failure</option>
+          <option value="transient">Transient failure (will retry)</option>
+          <option value="permanent">Permanent failure</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row single">
+      <label>Reason
+        <textarea name="reason" required>Department record needs to reflect a synthetic internal transfer.</textarea>
+      </label>
+      <label>Free text
+        <textarea name="free_text">Please update this synthetic worker's department after manager approval.</textarea>
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Create Worker Change</button>
+    </div>
   </form>
 
-  <form class="panel request-form" method="post" action="/requests/new">
+  <form id="payroll-correction" class="panel request-form" method="post" action="/requests/new">
     <input type="hidden" name="request_type" value="payroll_correction">
-    <h2>Payroll Correction</h2>
-    <label>Submitted by <input name="submitted_by" value="Demo Payroll Analyst" required></label>
-    <label>Email <input type="email" name="submitted_by_email" value="payroll@example.test" required></label>
-    <label>Worker ID <input name="worker_id" value="WKR-10002" required></label>
-    <label>Pay period start <input type="date" name="pay_period_start" value="2026-06-01" required></label>
-    <label>Pay period end <input type="date" name="pay_period_end" value="2026-06-15" required></label>
-    <label>Correction type
-      <select name="correction_type" required>
-        <option value="underpayment">Underpayment</option>
-        <option value="overpayment">Overpayment</option>
-        <option value="missed_earning">Missed earning</option>
-        <option value="deduction_error">Deduction error</option>
-      </select>
-    </label>
-    <label>Amount <input type="number" name="amount" min="0.01" max="10000" step="0.01" value="650.00" required></label>
-    <label>Currency <input name="currency" value="CAD" required></label>
-    <label>Requested by role
-      <select name="requested_by_role" required>
-        <option value="payroll_analyst">Payroll analyst</option>
-        <option value="manager">Manager</option>
-      </select>
-    </label>
-    <label>Adapter simulation
-      <select name="simulate_failure">
-        <option value="none">No failure</option>
-        <option value="transient">Transient failure</option>
-        <option value="permanent">Permanent failure</option>
-      </select>
-    </label>
-    <label>Reason <textarea name="reason" required>Synthetic payroll correction for missed earning code in the demo period.</textarea></label>
-    <label>Free text <textarea name="free_text">Please review this synthetic payroll correction. AI may summarize, but approval and validation are rule-based.</textarea></label>
-    <button type="submit">Create Payroll Correction</button>
+    <header>
+      <span class="pill accent">Demo · Payroll Correction</span>
+      <h2 style="margin-top:8px;">Payroll Correction</h2>
+      <p class="panel-sub">Synthetic payroll correction → JSON validation → approval → XML/XSD outbound → mock legacy payroll adapter.</p>
+    </header>
+
+    <div class="form-row">
+      <label>Submitted by
+        <input name="submitted_by" value="Demo Payroll Analyst" required>
+      </label>
+      <label>Email
+        <input type="email" name="submitted_by_email" value="payroll@example.test" required>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Worker ID
+        <input name="worker_id" value="WKR-10002" required>
+      </label>
+      <label>Correction type
+        <select name="correction_type" required>
+          <option value="underpayment">Underpayment</option>
+          <option value="overpayment">Overpayment</option>
+          <option value="missed_earning">Missed earning</option>
+          <option value="deduction_error">Deduction error</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Pay period start
+        <input type="date" name="pay_period_start" value="2026-06-01" required>
+      </label>
+      <label>Pay period end
+        <input type="date" name="pay_period_end" value="2026-06-15" required>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Amount
+        <input type="number" name="amount" min="0.01" max="10000" step="0.01" value="650.00" required>
+      </label>
+      <label>Currency
+        <input name="currency" value="CAD" required>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Requested by role
+        <select name="requested_by_role" required>
+          <option value="payroll_analyst">Payroll analyst</option>
+          <option value="manager">Manager</option>
+        </select>
+      </label>
+      <label>Adapter simulation
+        <select name="simulate_failure">
+          <option value="none">No failure</option>
+          <option value="transient">Transient failure (will retry)</option>
+          <option value="permanent">Permanent failure</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-row single">
+      <label>Reason
+        <textarea name="reason" required>Synthetic payroll correction for missed earning code in the demo period.</textarea>
+      </label>
+      <label>Free text
+        <textarea name="free_text">Please review this synthetic payroll correction. AI may summarize, but approval and validation are rule-based.</textarea>
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Create Payroll Correction</button>
+    </div>
   </form>
+
 </section>
 
-<section class="panel">
+<section class="panel" style="margin-top: 18px;">
   <h2>Scripted Samples</h2>
   <p class="muted">For API walkthroughs, fetch the bundled synthetic payloads from <code>/api/demo/sample-payloads</code> and post to <code>/api/intake/requests</code>. The public site uses relative paths so the same instructions work behind Cloudflare or on localhost.</p>
 </section>
+
 {% endblock %}

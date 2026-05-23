@@ -1,32 +1,91 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% macro status_pill(status) -%}
+  {%- set s = status|string -%}
+  {%- if s in ["completed", "approved"] -%}
+    <span class="pill ok">{{ s|replace("_", " ")|title }}</span>
+  {%- elif s in ["received", "pending_validation", "validated", "pending_approval", "approved_in_progress"] -%}
+    <span class="pill info">{{ s|replace("_", " ")|title }}</span>
+  {%- elif s in ["validation_failed", "rejected", "failed_permanent"] -%}
+    <span class="pill danger">{{ s|replace("_", " ")|title }}</span>
+  {%- elif s in ["failed_retryable", "retry_scheduled"] -%}
+    <span class="pill warn">{{ s|replace("_", " ")|title }}</span>
+  {%- else -%}
+    <span class="pill neutral">{{ s|replace("_", " ")|title }}</span>
+  {%- endif -%}
+{%- endmacro %}
+
 <section class="hero">
-  <h1>Adapter & Audit Trail Prototype</h1>
-  <p>Demonstrates deterministic validation, approval routing, mock adapter execution, retry handling, and append-only audit timelines using synthetic data.</p>
+  <div class="eyebrow">Campus ERP Integration Bridge</div>
+  <h1>Workday-adjacent Adapter &amp; Audit Trail Prototype</h1>
+  <p class="subtitle">Demonstrates deterministic validation, approval routing, mock adapter execution, retry handling, and append-only audit timelines using synthetic data.</p>
+  <div class="first-steps">
+    <strong>What to click first:</strong> Try a Worker Change or Payroll Correction request, submit it for validation, approve it, then inspect the canonical payload, adapter job, and audit timeline.
+  </div>
 </section>
 
-<section class="metrics">
+<section class="demo-cards">
+  <article class="demo-card">
+    <span class="tag">Demo · Worker Change</span>
+    <h2>Worker Change Demo</h2>
+    <p>A synthetic worker data change moving through JSON Schema validation, manager approval, canonical mapping, and a mock ERP REST adapter.</p>
+    <div class="actions">
+      <a class="btn" href="/requests/new#worker-change">Create Worker Change</a>
+      <a class="btn secondary" href="/docs#tag/intake">See API</a>
+    </div>
+  </article>
+  <article class="demo-card">
+    <span class="tag">Demo · Payroll Correction</span>
+    <h2>Payroll Correction Demo</h2>
+    <p>A synthetic payroll correction with JSON validation, approval routing, XML/XSD outbound validation, and a mock legacy payroll adapter execution.</p>
+    <div class="actions">
+      <a class="btn" href="/requests/new#payroll-correction">Create Payroll Correction</a>
+      <a class="btn secondary" href="/docs#tag/intake">See API</a>
+    </div>
+  </article>
+</section>
+
+<section class="section-heading">
+  <h2>Metrics</h2>
+  <span class="hint">Read-only snapshot · synthetic data</span>
+</section>
+<section class="metrics" aria-label="System metrics">
   <div><span>{{ metrics.total_requests }}</span>Total requests</div>
   <div><span>{{ metrics.pending_approvals }}</span>Pending approvals</div>
   <div><span>{{ metrics.completed_requests }}</span>Completed</div>
   <div><span>{{ metrics.failed_retryable_jobs }}</span>Retryable failures</div>
 </section>
 
-<section>
-  <h2>Recent Requests</h2>
+<section class="table-card">
+  <div class="table-card-head">
+    <h2>Recent Requests</h2>
+    <span class="hint">Latest 10 · ordered by created_at desc</span>
+  </div>
   <table>
-    <thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Priority</th><th></th></tr></thead>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th></th>
+      </tr>
+    </thead>
     <tbody>
     {% for item in requests %}
       <tr>
-        <td>{{ item.id[:8] }}</td>
-        <td>{{ item.request_type }}</td>
-        <td>{{ item.status }}</td>
-        <td>{{ item.priority }}</td>
-        <td><a href="/requests/{{ item.id }}">Open</a></td>
+        <td><span class="id-mono">{{ item.id[:8] }}</span></td>
+        <td>{{ item.request_type|replace("_", " ")|title }}</td>
+        <td>{{ status_pill(item.status) }}</td>
+        <td>{{ item.priority|title }}</td>
+        <td><a class="btn ghost small" href="/requests/{{ item.id }}">Open →</a></td>
       </tr>
+    {% else %}
+      <tr><td colspan="5" class="muted" style="text-align:center;padding:20px;">No requests yet — create one above.</td></tr>
     {% endfor %}
     </tbody>
   </table>
 </section>
+
 {% endblock %}

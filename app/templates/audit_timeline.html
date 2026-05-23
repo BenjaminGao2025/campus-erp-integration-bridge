@@ -1,19 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Audit Timeline</h1>
+
+{% macro classify(event_type) -%}
+  {%- set t = event_type|lower -%}
+  {%- if "fail" in t or "rejected" in t or "error" in t -%}evt-danger
+  {%- elif "retry" in t or "warn" in t -%}evt-warn
+  {%- elif "completed" in t or "approved" in t or "passed" in t or "success" in t -%}evt-ok
+  {%- else -%}evt-info
+  {%- endif -%}
+{%- endmacro %}
+
+<div class="page-head">
+  <div>
+    <div class="crumbs">/ requests / {{ item.id }} / audit</div>
+    <h1>Audit Timeline</h1>
+  </div>
+  <a class="btn secondary small" href="/requests/{{ item.id }}">← Back to request</a>
+</div>
+
+<p class="muted" style="max-width: 80ch; margin-bottom: 18px;">
+  Append-only event log for request <code>{{ item.id[:8] }}</code>. Ordered oldest to newest. Each event is durable and includes actor, message, and optional before/after state.
+</p>
+
 <ol class="timeline">
   {% for event in events %}
-  <li>
-    <strong>{{ event.event_type }}</strong>
-    <span>{{ event.created_at }} - {{ event.actor_type }}{% if event.actor_id %} - {{ event.actor_id }}{% endif %}</span>
-    <p>{{ event.message }}</p>
-    {% if event.before_state or event.after_state %}
-      <pre>{{ {"before": event.before_state, "after": event.after_state}|tojson(indent=2) }}</pre>
-    {% endif %}
+  <li class="{{ classify(event.event_type) }}">
+    <div class="evt-head">
+      <strong>{{ event.event_type }}</strong>
+      <span class="pill neutral">{{ event.actor_type }}{% if event.actor_id %} · {{ event.actor_id }}{% endif %}</span>
+      <span class="evt-meta">{{ event.created_at }}</span>
+    </div>
+    <p class="evt-body">{{ event.message }}</p>
+
     {% if event.error_code %}
-      <p><strong>Error:</strong> {{ event.error_code }}{% if event.error_message %} - {{ event.error_message }}{% endif %}</p>
+      <div class="evt-error"><strong>Error:</strong> {{ event.error_code }}{% if event.error_message %} — {{ event.error_message }}{% endif %}</div>
     {% endif %}
+
+    {% if event.before_state or event.after_state %}
+      <details>
+        <summary>State diff</summary>
+        <pre>{{ {"before": event.before_state, "after": event.after_state}|tojson(indent=2) }}</pre>
+      </details>
+    {% endif %}
+  </li>
+  {% else %}
+  <li class="evt-info">
+    <p class="muted" style="margin:0;">No audit events recorded yet.</p>
   </li>
   {% endfor %}
 </ol>
+
 {% endblock %}

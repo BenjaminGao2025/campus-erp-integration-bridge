@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preview · Campus ERP Integration Bridge</title>
+    <link rel="stylesheet" href="app/static/styles.css">
+    <style>
+      .preview-shell { background: #e6ebf0; padding: 24px 0; min-height: 100vh; }
+      .preview-shell .container { background: var(--bg); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 12px 32px rgba(16,24,40,.06); padding: 0 !important; max-width: 1240px !important; overflow: hidden; margin: 0 auto 28px; }
+      .preview-shell .container > .topbar { border-radius: 10px 10px 0 0; }
+      .preview-shell .container > .footer { background: var(--surface); }
+      .preview-shell .page-frame { max-width: 1180px; margin: 0 auto; padding: 28px 28px 36px; width: 100%; }
+      .preview-label { max-width: 1240px; margin: 0 auto 8px; color: #5b6b7b; font-size: 12px; font-family: ui-monospace, "SF Mono", Menlo, monospace; padding: 0 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+    </style>
+  </head>
+  <body class="preview-shell">
+
+    <!-- ============== HOME / INDEX ============== -->
+    <div class="preview-label">GET /</div>
+    <div class="container">
+      <header class="topbar">
+        <a class="brand" href="#">Campus ERP Integration Bridge</a>
+        <nav>
+          <a href="#">Home</a>
+          <a href="#">Dashboard</a>
+          <a href="#">New Request</a>
+          <a href="#">API Docs</a>
+        </nav>
+        <span class="spacer"></span>
+        <span class="env-badge"><span class="dot"></span>Synthetic Demo</span>
+      </header>
+      <main class="page-frame">
+
+        <section class="hero">
+          <div class="eyebrow">Campus ERP Integration Bridge</div>
+          <h1>Workday-adjacent Adapter &amp; Audit Trail Prototype</h1>
+          <p class="subtitle">Demonstrates deterministic validation, approval routing, mock adapter execution, retry handling, and append-only audit timelines using synthetic data.</p>
+          <div class="first-steps">
+            <strong>What to click first:</strong> Try a Worker Change or Payroll Correction request, submit it for validation, approve it, then inspect the canonical payload, adapter job, and audit timeline.
+          </div>
+        </section>
+
+        <section class="demo-cards">
+          <article class="demo-card">
+            <span class="tag">Demo · Worker Change</span>
+            <h2>Worker Change Demo</h2>
+            <p>A synthetic worker data change moving through JSON Schema validation, manager approval, canonical mapping, and a mock ERP REST adapter.</p>
+            <div class="actions">
+              <a class="btn" href="#">Create Worker Change</a>
+              <a class="btn secondary" href="#">See API</a>
+            </div>
+          </article>
+          <article class="demo-card">
+            <span class="tag">Demo · Payroll Correction</span>
+            <h2>Payroll Correction Demo</h2>
+            <p>A synthetic payroll correction with JSON validation, approval routing, XML/XSD outbound validation, and a mock legacy payroll adapter execution.</p>
+            <div class="actions">
+              <a class="btn" href="#">Create Payroll Correction</a>
+              <a class="btn secondary" href="#">See API</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="section-heading">
+          <h2>Metrics</h2>
+          <span class="hint">Read-only snapshot · synthetic data</span>
+        </section>
+        <section class="metrics" aria-label="System metrics">
+          <div><span>14</span>Total requests</div>
+          <div><span>2</span>Pending approvals</div>
+          <div><span>9</span>Completed</div>
+          <div><span>1</span>Retryable failures</div>
+        </section>
+
+        <section class="table-card">
+          <div class="table-card-head">
+            <h2>Recent Requests</h2>
+            <span class="hint">Latest 10 · ordered by created_at desc</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Type</th><th>Status</th><th>Priority</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="id-mono">a3f1c20b</span></td><td>Worker Change</td><td><span class="pill ok">Completed</span></td><td>Normal</td><td><a class="btn ghost small" href="#">Open →</a></td></tr>
+              <tr><td><span class="id-mono">b9e4711d</span></td><td>Payroll Correction</td><td><span class="pill warn">Retry Scheduled</span></td><td>High</td><td><a class="btn ghost small" href="#">Open →</a></td></tr>
+              <tr><td><span class="id-mono">cc02ff48</span></td><td>Worker Change</td><td><span class="pill info">Pending Approval</span></td><td>Normal</td><td><a class="btn ghost small" href="#">Open →</a></td></tr>
+              <tr><td><span class="id-mono">d70488ea</span></td><td>Payroll Correction</td><td><span class="pill danger">Validation Failed</span></td><td>Normal</td><td><a class="btn ghost small" href="#">Open →</a></td></tr>
+              <tr><td><span class="id-mono">e21a9d3f</span></td><td>Worker Change</td><td><span class="pill info">Received</span></td><td>Low</td><td><a class="btn ghost small" href="#">Open →</a></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+      </main>
+      <footer class="footer">Synthetic Workday-adjacent prototype. No official university systems, data, branding, or Workday access. Synthetic data only.</footer>
+    </div>
+
+    <!-- ============== REQUEST DETAIL ============== -->
+    <div class="preview-label">GET /requests/{id}</div>
+    <div class="container">
+      <header class="topbar">
+        <a class="brand" href="#">Campus ERP Integration Bridge</a>
+        <nav>
+          <a href="#">Home</a><a href="#">Dashboard</a><a href="#">New Request</a><a href="#">API Docs</a>
+        </nav>
+        <span class="spacer"></span>
+        <span class="env-badge"><span class="dot"></span>Synthetic Demo</span>
+      </header>
+      <main class="page-frame">
+
+        <div class="page-head">
+          <div>
+            <div class="crumbs">/ requests / b9e4711d-3a40-4f02-9c11-c5cd2a08fa17</div>
+            <h1>Request <span class="id-mono" style="font-weight:500;color:var(--text-muted);">b9e4711d</span></h1>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="pill info">Pending Approval</span>
+            <span class="pill neutral">High priority</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-eyebrow">What this request demonstrates</div>
+          This request demonstrates a synthetic payroll correction with JSON validation, approval, XML/XSD outbound validation, and mock legacy adapter execution.
+        </div>
+
+        <section class="detail-grid">
+          <div class="panel">
+            <h2>Request Metadata</h2>
+            <dl class="metadata-list">
+              <dt>Type</dt><dd>Payroll Correction</dd>
+              <dt>Status</dt><dd><span class="pill info">Pending Approval</span></dd>
+              <dt>Priority</dt><dd>High</dd>
+              <dt>Correlation</dt><dd><code>corr_8b21d40e</code></dd>
+              <dt>Submitted by</dt><dd>Demo Payroll Analyst &lt;payroll@example.test&gt;</dd>
+            </dl>
+          </div>
+
+          <div class="panel">
+            <h2>Workflow Actions</h2>
+            <div class="action-block">
+              <strong>Approval Required: Payroll Analyst</strong>
+              <form class="action-form">
+                <input value="payroll_analyst_demo_user" aria-label="Decision by">
+                <input value="Approved for portfolio demo." aria-label="Comment">
+                <button type="button">Approve</button>
+                <button type="button" class="secondary">Reject</button>
+              </form>
+            </div>
+            <div class="action-block">
+              <strong>Adapter job retry available</strong>
+              <p class="muted" style="margin:0;font-size:13px;">Mock Legacy Payroll Xml · attempt 1 of 3 · last error <code>ADAPTER_TRANSIENT_504</code></p>
+              <form class="action-form" style="grid-template-columns:1fr;">
+                <button type="button">Retry Job</button>
+              </form>
+            </div>
+            <p style="margin-top:14px;"><a href="#">→ View audit timeline</a></p>
+          </div>
+        </section>
+
+        <section class="detail-grid">
+          <div class="panel">
+            <h2>Approvals</h2>
+            <table>
+              <thead><tr><th>Role</th><th>Status</th><th>Decision By</th></tr></thead>
+              <tbody>
+                <tr><td>Payroll Analyst</td><td><span class="pill warn">Pending</span></td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel">
+            <h2>Adapter Jobs</h2>
+            <table>
+              <thead><tr><th>Adapter</th><th>Status</th><th>Attempts</th><th>Error</th></tr></thead>
+              <tbody>
+                <tr><td>Mock Legacy Payroll Xml</td><td><span class="pill warn">Failed Retryable</span></td><td>1 / 3</td><td><code>ADAPTER_TRANSIENT_504</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <details class="panel" open>
+          <summary>Raw Payload <span class="meta">incoming JSON</span></summary>
+          <div class="details-body">
+            <pre>{
+  "worker_id": "WKR-10002",
+  "pay_period_start": "2026-06-01",
+  "pay_period_end": "2026-06-15",
+  "correction_type": "underpayment",
+  "amount": 650.0,
+  "currency": "CAD",
+  "reason": "Synthetic payroll correction for missed earning code in the demo period.",
+  "requested_by_role": "payroll_analyst",
+  "simulate_failure": "transient"
+}</pre>
+          </div>
+        </details>
+
+        <details class="panel" style="margin-top:12px;">
+          <summary>Canonical Payload <span class="meta">normalized event model</span></summary>
+          <div class="details-body"></div>
+        </details>
+
+        <details class="panel" style="margin-top:12px;">
+          <summary>Integration Artifacts <span class="meta">adapter outbound payload(s)</span></summary>
+          <div class="details-body"></div>
+        </details>
+
+        <details class="panel" style="margin-top:12px;">
+          <summary>Support Notes <span class="meta">analyst &amp; AI-assistive notes</span></summary>
+          <div class="details-body"></div>
+        </details>
+
+      </main>
+      <footer class="footer">Synthetic Workday-adjacent prototype. No official university systems, data, branding, or Workday access. Synthetic data only.</footer>
+    </div>
+
+    <!-- ============== AUDIT TIMELINE ============== -->
+    <div class="preview-label">GET /requests/{id}/audit</div>
+    <div class="container">
+      <header class="topbar">
+        <a class="brand" href="#">Campus ERP Integration Bridge</a>
+        <nav><a href="#">Home</a><a href="#">Dashboard</a><a href="#">New Request</a><a href="#">API Docs</a></nav>
+        <span class="spacer"></span>
+        <span class="env-badge"><span class="dot"></span>Synthetic Demo</span>
+      </header>
+      <main class="page-frame">
+        <div class="page-head">
+          <div>
+            <div class="crumbs">/ requests / b9e4711d / audit</div>
+            <h1>Audit Timeline</h1>
+          </div>
+          <a class="btn secondary small" href="#">← Back to request</a>
+        </div>
+
+        <p class="muted" style="max-width: 80ch; margin-bottom: 18px;">
+          Append-only event log for request <code>b9e4711d</code>. Ordered oldest to newest. Each event is durable and includes actor, message, and optional before/after state.
+        </p>
+
+        <ol class="timeline">
+          <li class="evt-info">
+            <div class="evt-head"><strong>request.created</strong><span class="pill neutral">user · payroll@example.test</span><span class="evt-meta">2026-05-22T10:14:02Z</span></div>
+            <p class="evt-body">Synthetic payroll correction request received via web form.</p>
+          </li>
+          <li class="evt-ok">
+            <div class="evt-head"><strong>validation.passed</strong><span class="pill neutral">system · validator</span><span class="evt-meta">2026-05-22T10:14:03Z</span></div>
+            <p class="evt-body">JSON Schema validation passed against payroll_correction.schema.json.</p>
+            <details><summary>State diff</summary><pre>{
+  "before": { "status": "received" },
+  "after":  { "status": "validated" }
+}</pre></details>
+          </li>
+          <li class="evt-info">
+            <div class="evt-head"><strong>approval.requested</strong><span class="pill neutral">system · router</span><span class="evt-meta">2026-05-22T10:14:03Z</span></div>
+            <p class="evt-body">Routed to payroll_analyst for approval.</p>
+          </li>
+          <li class="evt-ok">
+            <div class="evt-head"><strong>approval.approved</strong><span class="pill neutral">user · payroll_analyst_demo_user</span><span class="evt-meta">2026-05-22T10:14:11Z</span></div>
+            <p class="evt-body">Approved for portfolio demo.</p>
+          </li>
+          <li class="evt-danger">
+            <div class="evt-head"><strong>adapter.failed</strong><span class="pill neutral">system · mock_legacy_payroll_xml</span><span class="evt-meta">2026-05-22T10:14:12Z</span></div>
+            <p class="evt-body">Mock legacy payroll adapter returned a transient error.</p>
+            <div class="evt-error"><strong>Error:</strong> ADAPTER_TRANSIENT_504 — Upstream timed out (simulated).</div>
+          </li>
+          <li class="evt-warn">
+            <div class="evt-head"><strong>retry.scheduled</strong><span class="pill neutral">system · retry_service</span><span class="evt-meta">2026-05-22T10:14:13Z</span></div>
+            <p class="evt-body">Retry attempt 2 of 3 scheduled with backoff.</p>
+          </li>
+        </ol>
+      </main>
+      <footer class="footer">Synthetic Workday-adjacent prototype. No official university systems, data, branding, or Workday access. Synthetic data only.</footer>
+    </div>
+
+  </body>
+</html>

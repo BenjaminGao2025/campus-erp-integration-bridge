@@ -1,40 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Dashboard</h1>
 
-<section class="metrics">
+<div class="page-head">
+  <div>
+    <div class="crumbs">/ dashboard</div>
+    <h1>Dashboard</h1>
+  </div>
+  <span class="env-badge" title="Read-only · synthetic data"><span class="dot"></span>Synthetic data only</span>
+</div>
+
+<section class="metrics" aria-label="Overall metrics">
   {% for card in metric_cards %}
     <div><span>{{ card.value }}</span>{{ card.label }}</div>
   {% endfor %}
 </section>
 
-<section class="dashboard-grid">
-  <div class="panel">
-    <h2>Requests by Type</h2>
+<section class="detail-grid">
+  <div class="panel" style="padding:0; overflow:hidden;">
+    <div class="table-card-head"><h2>Requests by Type</h2><span class="hint">grouped count</span></div>
     <table>
-      <thead><tr><th>Type</th><th>Count</th></tr></thead>
+      <thead><tr><th>Type</th><th style="text-align:right;">Count</th></tr></thead>
       <tbody>
       {% for request_type, count in requests_by_type.items() %}
-        <tr><td>{{ request_type|replace("_", " ")|title }}</td><td>{{ count }}</td></tr>
+        <tr>
+          <td>{{ request_type|replace("_", " ")|title }}</td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums;">{{ count }}</td>
+        </tr>
       {% else %}
-        <tr><td colspan="2">No requests yet</td></tr>
+        <tr><td colspan="2" class="muted">No requests yet</td></tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 
-  <div class="panel">
-    <h2>Requests by Status</h2>
+  <div class="panel" style="padding:0; overflow:hidden;">
+    <div class="table-card-head"><h2>Requests by Status</h2><span class="hint">grouped count</span></div>
     <table>
-      <thead><tr><th>Status</th><th>Count</th></tr></thead>
+      <thead><tr><th>Status</th><th style="text-align:right;">Count</th></tr></thead>
       <tbody>
       {% for status, count in requests_by_status.items() %}
-        <tr><td>{{ status|replace("_", " ")|title }}</td><td>{{ count }}</td></tr>
+        <tr>
+          <td>
+            {% set s = status|string %}
+            {% if s in ["completed", "approved"] %}<span class="pill ok">{{ s|replace("_", " ")|title }}</span>
+            {% elif s in ["received", "pending_validation", "validated", "pending_approval", "approved_in_progress"] %}<span class="pill info">{{ s|replace("_", " ")|title }}</span>
+            {% elif s in ["validation_failed", "rejected", "failed_permanent"] %}<span class="pill danger">{{ s|replace("_", " ")|title }}</span>
+            {% elif s in ["failed_retryable", "retry_scheduled"] %}<span class="pill warn">{{ s|replace("_", " ")|title }}</span>
+            {% else %}<span class="pill neutral">{{ s|replace("_", " ")|title }}</span>{% endif %}
+          </td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums;">{{ count }}</td>
+        </tr>
       {% else %}
-        <tr><td colspan="2">No requests yet</td></tr>
+        <tr><td colspan="2" class="muted">No requests yet</td></tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 </section>
+
 {% endblock %}
