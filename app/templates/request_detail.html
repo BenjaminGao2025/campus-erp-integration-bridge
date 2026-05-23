@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Request {{ item.id[:8] }}</h1>
+
+<section class="detail-grid">
+  <div class="panel">
+    <h2>Request Metadata</h2>
+    <dl class="metadata-list">
+      <dt>Type</dt><dd>{{ item.request_type|replace("_", " ")|title }}</dd>
+      <dt>Status</dt><dd>{{ item.status|replace("_", " ")|title }}</dd>
+      <dt>Priority</dt><dd>{{ item.priority|title }}</dd>
+      <dt>Correlation ID</dt><dd>{{ item.correlation_id }}</dd>
+      <dt>Submitted by</dt><dd>{{ item.submitted_by }} &lt;{{ item.submitted_by_email }}&gt;</dd>
+    </dl>
+  </div>
+
+  <div class="panel">
+    <h2>Workflow Actions</h2>
+    {% if item.status in ["received", "validation_failed"] %}
+      <form method="post" action="/requests/{{ item.id }}/submit" class="action-form">
+        <button type="submit">Submit for Validation</button>
+      </form>
+    {% endif %}
+
+    {% for approval in detail.approval_tasks %}
+      {% if approval.status == "pending" %}
+        <div class="action-block">
+          <strong>Approval Required: {{ approval.approver_role|replace("_", " ")|title }}</strong>
+          <form method="post" action="/requests/{{ item.id }}/approvals/{{ approval.id }}/decision" class="action-form">
+            <input name="decision_by" value="{{ approval.approver_role }}_demo_user" aria-label="Decision by">
+            <input name="comment" value="Approved for portfolio demo." aria-label="Comment">
+            <button name="decision" value="approved" type="submit">Approve</button>
+            <button name="decision" value="rejected" type="submit" class="secondary">Reject</button>
+          </form>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% for job in detail.integration_jobs %}
+      {% if job.status in ["failed_retryable", "retry_scheduled"] %}
+        <form method="post" action="/requests/{{ item.id }}/jobs/{{ job.id }}/retry" class="action-form">
+          <button type="submit">Retry Job</button>
+        </form>
+      {% endif %}
+    {% endfor %}
+
+    <p><a href="/requests/{{ item.id }}/audit">View audit timeline</a></p>
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div class="panel">
+    <h2>Raw Payload</h2>
+    <pre>{{ detail.raw_payload|tojson(indent=2) }}</pre>
+  </div>
+  <div class="panel">
+    <h2>Canonical Payload</h2>
+    {% if detail.normalized_payload %}
+      <pre>{{ detail.normalized_payload|tojson(indent=2) }}</pre>
+    {% else %}
+      <p class="muted">Submit the request to create the canonical event model.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div class="panel">
+    <h2>Approvals</h2>
+    <table>
+      <thead><tr><th>Role</th><th>Status</th><th>Decision By</th></tr></thead>
+      <tbody>
+      {% for approval in detail.approval_tasks %}
+        <tr>
+          <td>{{ approval.approver_role|replace("_", " ")|title }}</td>
+          <td>{{ approval.status|replace("_", " ")|title }}</td>
+          <td>{{ approval.decision_by or "-" }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="3">No approval task yet</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Integration Jobs</h2>
+    <table>
+      <thead><tr><th>Adapter</th><th>Status</th><th>Attempts</th><th>Error</th></tr></thead>
+      <tbody>
+      {% for job in detail.integration_jobs %}
+        <tr>
+          <td>{{ job.adapter_type|replace("_", " ")|title }}</td>
+          <td>{{ job.status|replace("_", " ")|title }}</td>
+          <td>{{ job.attempt_count }} / {{ job.max_attempts }}</td>
+          <td>{{ job.last_error_code or "-" }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4">No integration job yet</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div class="panel">
+    <h2>Support Notes</h2>
+    {% for note in detail.support_notes %}
+      <article class="note">
+        <strong>{{ note.note_type|replace("_", " ")|title }}</strong>
+        <p>{{ note.content }}</p>
+        <span>{{ note.created_by }}{% if note.is_ai_generated %} - AI-generated suggestion{% endif %}</span>
+      </article>
+    {% else %}
+      <p class="muted">No support notes yet.</p>
+    {% endfor %}
+  </div>
+
+  <div class="panel">
+    <h2>Integration Artifacts</h2>
+    {% for artifact in detail.integration_artifacts %}
+      <article class="artifact">
+        <strong>{{ artifact.payload_format|upper }} artifact</strong>
+        <p class="muted">Payload hash: {{ artifact.payload_hash }}</p>
+        <pre>{{ artifact.payload_body }}</pre>
+      </article>
+    {% else %}
+      <p class="muted">No adapter artifact yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{
+  "request_type": "worker_change",
+  "submitted_by": "Demo Requester",
+  "submitted_by_email": "requester@example.test",
+  "payload": {
+    "worker_id": "WKR-10001",
+    "change_type": "department_update",
+    "effective_date": "2026-07-01",
+    "current_value": "Operations",
+    "proposed_value": "Enterprise Systems",
+    "requested_by_role": "manager"
+  },
+  "free_text": "Invalid sample missing required reason."
+}

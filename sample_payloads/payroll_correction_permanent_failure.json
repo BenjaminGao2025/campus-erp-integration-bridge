@@ -1,0 +1,17 @@
+{
+  "request_type": "payroll_correction",
+  "submitted_by": "Demo Payroll Analyst",
+  "submitted_by_email": "payroll@example.test",
+  "payload": {
+    "worker_id": "WKR-10002",
+    "pay_period_start": "2026-06-01",
+    "pay_period_end": "2026-06-15",
+    "correction_type": "underpayment",
+    "amount": 650.0,
+    "currency": "CAD",
+    "reason": "Synthetic payroll correction used to demonstrate permanent adapter failure.",
+    "requested_by_role": "payroll_analyst",
+    "simulate_failure": "permanent"
+  },
+  "free_text": "This sample intentionally fails permanently."
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="PayrollCorrection">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CanonicalEventId" type="xs:string"/>
+        <xs:element name="RequestId" type="xs:string"/>
+        <xs:element name="WorkerId" type="xs:string"/>
+        <xs:element name="PayPeriodStart" type="xs:date"/>
+        <xs:element name="PayPeriodEnd" type="xs:date"/>
+        <xs:element name="CorrectionType" type="xs:string"/>
+        <xs:element name="Amount" type="xs:decimal"/>
+        <xs:element name="Currency" type="xs:string"/>
+        <xs:element name="Reason" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

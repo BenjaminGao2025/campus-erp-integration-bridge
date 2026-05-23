@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Worker Change Request",
+  "type": "object",
+  "required": [
+    "worker_id",
+    "change_type",
+    "effective_date",
+    "current_value",
+    "proposed_value",
+    "reason",
+    "requested_by_role"
+  ],
+  "properties": {
+    "worker_id": { "type": "string", "pattern": "^WKR-[0-9]{5}$" },
+    "change_type": {
+      "type": "string",
+      "enum": ["department_update", "manager_update", "location_update", "employment_status_update"]
+    },
+    "effective_date": { "type": "string", "format": "date" },
+    "current_value": { "type": "string" },
+    "proposed_value": { "type": "string" },
+    "reason": { "type": "string", "minLength": 10 },
+    "requested_by_role": { "type": "string", "enum": ["employee", "manager", "analyst"] },
+    "simulate_failure": { "type": "string", "enum": ["none", "transient", "permanent"], "default": "none" }
+  },
+  "additionalProperties": false
+}

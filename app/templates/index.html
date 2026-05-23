@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Adapter & Audit Trail Prototype</h1>
+  <p>Demonstrates deterministic validation, approval routing, mock adapter execution, retry handling, and append-only audit timelines using synthetic data.</p>
+</section>
+
+<section class="metrics">
+  <div><span>{{ metrics.total_requests }}</span>Total requests</div>
+  <div><span>{{ metrics.pending_approvals }}</span>Pending approvals</div>
+  <div><span>{{ metrics.completed_requests }}</span>Completed</div>
+  <div><span>{{ metrics.failed_retryable_jobs }}</span>Retryable failures</div>
+</section>
+
+<section>
+  <h2>Recent Requests</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Priority</th><th></th></tr></thead>
+    <tbody>
+    {% for item in requests %}
+      <tr>
+        <td>{{ item.id[:8] }}</td>
+        <td>{{ item.request_type }}</td>
+        <td>{{ item.status }}</td>
+        <td>{{ item.priority }}</td>
+        <td><a href="/requests/{{ item.id }}">Open</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

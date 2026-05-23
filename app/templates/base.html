@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Campus ERP Integration Bridge</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">Campus ERP Integration Bridge</a>
+      <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/requests/new">New Request</a>
+        <a href="/docs">API Docs</a>
+      </nav>
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">
+      Synthetic Workday-adjacent prototype. No official university systems, data, branding, or Workday access.
+    </footer>
+  </body>
+</html>

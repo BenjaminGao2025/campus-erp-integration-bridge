@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Audit Timeline</h1>
+<ol class="timeline">
+  {% for event in events %}
+  <li>
+    <strong>{{ event.event_type }}</strong>
+    <span>{{ event.created_at }} - {{ event.actor_type }}{% if event.actor_id %} - {{ event.actor_id }}{% endif %}</span>
+    <p>{{ event.message }}</p>
+    {% if event.before_state or event.after_state %}
+      <pre>{{ {"before": event.before_state, "after": event.after_state}|tojson(indent=2) }}</pre>
+    {% endif %}
+    {% if event.error_code %}
+      <p><strong>Error:</strong> {{ event.error_code }}{% if event.error_message %} - {{ event.error_message }}{% endif %}</p>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% endblock %}

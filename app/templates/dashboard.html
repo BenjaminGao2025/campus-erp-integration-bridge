@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<section class="metrics">
+  {% for card in metric_cards %}
+    <div><span>{{ card.value }}</span>{{ card.label }}</div>
+  {% endfor %}
+</section>
+
+<section class="dashboard-grid">
+  <div class="panel">
+    <h2>Requests by Type</h2>
+    <table>
+      <thead><tr><th>Type</th><th>Count</th></tr></thead>
+      <tbody>
+      {% for request_type, count in requests_by_type.items() %}
+        <tr><td>{{ request_type|replace("_", " ")|title }}</td><td>{{ count }}</td></tr>
+      {% else %}
+        <tr><td colspan="2">No requests yet</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Requests by Status</h2>
+    <table>
+      <thead><tr><th>Status</th><th>Count</th></tr></thead>
+      <tbody>
+      {% for status, count in requests_by_status.items() %}
+        <tr><td>{{ status|replace("_", " ")|title }}</td><td>{{ count }}</td></tr>
+      {% else %}
+        <tr><td colspan="2">No requests yet</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

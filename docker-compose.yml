@@ -1,0 +1,43 @@
+services:
+  app:
+    build: .
+    container_name: campus-erp-bridge-app
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://campus_bridge:campus_bridge@db:5432/campus_bridge
+      DEMO_MODE: "true"
+      ENABLE_REAL_AI: "false"
+    ports:
+      - "127.0.0.1:${APP_HOST_PORT:-4910}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - default
+      - caddy
+
+  db:
+    image: postgres:16-alpine
+    container_name: campus-erp-bridge-postgres
+    environment:
+      POSTGRES_DB: campus_bridge
+      POSTGRES_USER: campus_bridge
+      POSTGRES_PASSWORD: campus_bridge
+    ports:
+      - "127.0.0.1:4911:5432"
+    volumes:
+      - campus_bridge_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campus_bridge -d campus_bridge"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  campus_bridge_pgdata:
+
+networks:
+  caddy:
+    external: true
+    name: mga-ai-agent_mga-network

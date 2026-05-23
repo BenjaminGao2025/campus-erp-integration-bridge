@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Payroll Correction Request",
+  "type": "object",
+  "required": [
+    "worker_id",
+    "pay_period_start",
+    "pay_period_end",
+    "correction_type",
+    "amount",
+    "currency",
+    "reason",
+    "requested_by_role"
+  ],
+  "properties": {
+    "worker_id": { "type": "string", "pattern": "^WKR-[0-9]{5}$" },
+    "pay_period_start": { "type": "string", "format": "date" },
+    "pay_period_end": { "type": "string", "format": "date" },
+    "correction_type": {
+      "type": "string",
+      "enum": ["underpayment", "overpayment", "missed_earning", "deduction_error"]
+    },
+    "amount": { "type": "number", "minimum": 0.01, "maximum": 10000 },
+    "currency": { "type": "string", "enum": ["CAD"] },
+    "reason": { "type": "string", "minLength": 10 },
+    "requested_by_role": { "type": "string", "enum": ["payroll_analyst", "manager"] },
+    "simulate_failure": { "type": "string", "enum": ["none", "transient", "permanent"], "default": "none" }
+  },
+  "additionalProperties": false
+}
