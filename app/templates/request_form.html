@@ -2,6 +2,7 @@
 {% block route_label %}GET /requests/new{% endblock %}
 {% block content %}
 
+<div class="request-page">
 <div class="page-head">
   <div>
     <div class="crumbs">/ requests / new</div>
@@ -9,7 +10,10 @@
   </div>
 </div>
 
-<p class="muted" style="max-width: 80ch;">Create a synthetic request for the demo workflow. The request is saved first; open the detail page to submit it into deterministic validation, approval routing, adapter execution, and audit logging. <strong>Synthetic data only — no real systems are contacted.</strong></p>
+<section class="panel request-intro">
+  <p>Create a synthetic request for the demo workflow. The request is saved first; open the detail page to submit it into deterministic validation, approval routing, adapter execution, and audit logging. <strong>Synthetic data only — no real systems are contacted.</strong></p>
+  <span class="pill neutral">No real systems</span>
+</section>
 
 <section class="form-grid">
 
@@ -17,7 +21,7 @@
     <input type="hidden" name="request_type" value="worker_change">
     <header>
       <span class="pill accent">Demo · Worker Change</span>
-      <h2 style="margin-top:8px;">Worker Change</h2>
+      <h2>Worker Change</h2>
       <p class="panel-sub">Synthetic worker data change → JSON Schema validation → manager approval → mock ERP REST adapter.</p>
     </header>
 
@@ -94,7 +98,7 @@
     <input type="hidden" name="request_type" value="payroll_correction">
     <header>
       <span class="pill accent">Demo · Payroll Correction</span>
-      <h2 style="margin-top:8px;">Payroll Correction</h2>
+      <h2>Payroll Correction</h2>
       <p class="panel-sub">Synthetic payroll correction → JSON validation → approval → XML/XSD outbound → mock legacy payroll adapter.</p>
     </header>
 
@@ -171,9 +175,10 @@
 
 </section>
 
-<section class="panel" style="margin-top: 18px;">
+<section class="panel scripted-samples">
   <h2>Scripted Samples</h2>
   <p class="muted">For API walkthroughs, fetch the bundled synthetic payloads from <code>/api/demo/sample-payloads</code> and post to <code>/api/intake/requests</code>. The public site uses relative paths so the same instructions work behind Cloudflare or on localhost.</p>
 </section>
+</div>
 
 {% endblock %}
